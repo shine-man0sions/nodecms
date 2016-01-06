@@ -1,0 +1,33 @@
+
+<form role="form" method="post" id="user-form">
+    <div class="form-group">
+        <label>名称</label>
+        <input class="form-control" name="name" value="<%= data.name %>">
+
+    </div>
+
+    <div class="form-group">
+        <label>类型</label>
+        <select name="type">
+            <option value="0" <% if(data.type==0){%> selected="selected" <%}%>>普通用户</option>
+            <option value="1" <% if(data.type==1){%> selected="selected" <%}%>>管理员</option>
+
+
+        </select>
+    </div>
+    <div class="form-group">
+        <label>email</label>
+        <input class="form-control" name="email" value="<%= data.email %>">
+
+    </div>
+
+
+    <div class="form-group">
+        <label>密码</label>
+        <input type="password" name="passwd" value="<%= data.passwd %>"/>
+    </div>
+
+
+    <button class="btn btn-primary" type="submit" >提交</button>
+    <button class="btn btn-success" type="reset">重置</button>
+</form>

@@ -1,0 +1,73 @@
+<script type="text/javascript" src="/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/ueditor/ueditor.all.js"></script>
+
+
+<script src="/bootstrap-fileinput/js/fileinput.min.js"></script>
+<link href="/bootstrap-fileinput/css/fileinput.min.css" rel="stylesheet"/>
+
+<form role="form" method="post">
+    <div class="form-group">
+        <label>名称</label>
+        <input class="form-control" name="name" value="<%= data.name %>">
+
+    </div>
+
+    <div class="form-group">
+        <label>父分类</label>
+        <select name="parentid">
+
+
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label>图片</label>
+        <input type="file" id="image">
+        <input type="text" name="image" value="<%= data.image %>" class="hide">
+    </div>
+    <div class="form-group">
+        <label>内容</label>
+        <textarea name="content" id="content" style="height:300px"><%= data.content %></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>排序</label>
+        <input type="number" name="sort" value="<%= data.sort||50 %>"/>
+    </div>
+
+    <button class="btn btn-primary" type="submit">提交</button>
+    <button class="btn btn-success" type="reset">重置</button>
+</form>
+
+<script type="text/javascript">
+    var id = '<%= data._id %>';
+    var ue = UE.getEditor('content');
+    $('#image').fileinput({
+        uploadUrl: '/upload'
+        //allowedFileExtensions : ['jpg', 'png','gif']
+    }).on('fileuploaded', function (event, data, previewId, index) {
+        var form = data.form, files = data.files, extra = data.extra,
+                response = data.response, reader = data.reader;
+        $("input[name=image]").val(response[0].url);
+    });
+
+    $(function () {
+
+        $.ajax({
+            url: '/admin/articleCat?ajax=1&parentid=0',
+
+            success: function (res) {
+
+                var html = '<option value="0">请选择</option>';
+                for (var i = 0; i < res.length; i++) {
+                    if(id!=res[i]._id)
+                        html += '<option value="' + res[i]._id + '">' + res[i].name;
+                }
+
+                $("select[name=parentid]").html(html);
+
+            }
+        });
+    })
+</script>

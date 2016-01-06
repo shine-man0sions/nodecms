@@ -1,0 +1,33 @@
+<a href="users/create" class="btn btn-primary">创建</a>
+<br/>
+<br/>
+<table class="table table-hover">
+    <tbody>
+    <tr>
+
+        <th>类型</th>
+        <th>名称</th>
+        <th>邮箱</th>
+        <th>操作</th>
+    </tr>
+    <% data.forEach(function(item){ %>
+    <tr>
+
+        <td><%= item.type == 1 ? '管理员' : '普通用户' %></td>
+        <td><%= item.name %></td>
+        <td><%= item.email %></td>
+
+        <td>
+            <div class="btn-group"><a href="/admin/users/update?id=<%= item._id %>"
+                                      class="btn btn-xs btn-primary">更改</a><a
+                        href="/admin/users/delete?id=<%= item._id %>" class="btn btn-xs btn-success delete_item">删除</a>
+            </div>
+        </td>
+    </tr>
+    <% }) %>
+
+    </tbody>
+</table>
+
+
+<% include ../../layouts/pager %>

@@ -1,0 +1,61 @@
+<a href="articleCat/create" class="btn btn-primary">创建</a>
+<br/>
+<br/>
+<table class="table table-hover treetable">
+    <tbody>
+    <tr>
+        <th>名称</th>
+        <th>图片</th>
+        <th>操作</th>
+    </tr>
+    <% data.forEach(function(item){ %>
+    <tr parentid="<%= item.parentid %>" cid="<%= item._id %>">
+        <td><i class="fa fa-angle-double-right fa-fw" onclick="taggleChild('<%= item._id %>')"></i><a
+                    href="/admin/article?catid=<%= item._id %>"><%= item.name %></a></td>
+        <td><img src="<%= item.image||defaultImg %>" class="thumbnail" height="20"/></td>
+
+        <td>
+            <div class="btn-group"><a href="/admin/articleCat/update?id=<%= item._id %>" class="btn btn-xs btn-primary">更改</a><a
+                        href="/admin/articleCat/delete?id=<%= item._id %>"
+                        class="btn btn-xs btn-success delete_item">删除</a></div>
+        </td>
+    </tr>
+    <% }) %>
+    </tbody>
+</table>
+
+<script>
+
+    function taggleChild(cid) {
+        var obj = $("tr[cid="+cid+"]");
+        var cildClass = "child_"+cid;
+
+        if(obj.attr("showchind"))
+        {
+            $("."+cildClass).toggle();
+        }
+        else
+        {
+            $.ajax({
+                url:'/admin/articleCat?ajax=1&parentid='+cid,
+                success:function(res){
+
+
+                    var html='';
+                    for(var i=0;i<res.length;i++)
+                    {
+                        var data = res[i];
+                        var image = data.image || '<%= defaultImg %>';
+                        html+='<tr class="'+cildClass+'"><td>&nbsp;&nbsp;&nbsp; <i class="fa fa-angle-down fa-fw"></i>'+data.name+'</td><td><img src="'+image+'" class="thumbnail" height="20"/></td><td><div class="btn-group"><a href="/admin/articleCat/update?id='+data._id+'" class="btn btn-xs btn-primary">更改</a><a href="/admin/articleCat/delete?id='+data._id+'" class="btn btn-xs btn-success delete_item">删除</a></div></td></tr>';
+                    }
+                    obj.after(html);
+                    obj.attr({showchind:true});
+                }
+            });
+
+        }
+
+    }
+</script>
+
+
